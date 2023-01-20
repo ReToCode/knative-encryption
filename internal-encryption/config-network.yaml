@@ -1,0 +1,10 @@
+apiVersion: v1
+data:
+  auto-tls: Enabled
+  http-protocol: Redirected
+  ingress-class: kourier.ingress.networking.knative.dev
+  internal-encryption: "true"
+kind: ConfigMap
+metadata:
+  name: config-network
+  namespace: knative-serving
