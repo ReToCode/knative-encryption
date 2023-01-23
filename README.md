@@ -1,5 +1,8 @@
 # Serverless auto-tls and internal-encryption
 
+## Visualization
+![Visualization](https://raw.githubusercontent.com/ReToCode/diagrams/main/knative/internal-encryption.drawio.svg)
+
 ## Prerequisites
 * A `kubernetes` cluster with `kubectl` configured that can provide services with type `LoadBalancer`
 * Installed the following components:
