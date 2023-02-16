@@ -20,4 +20,4 @@ spec:
         image: curlimages/curl
         command: 
         - sleep
-        - "3600"
+        - "36000"

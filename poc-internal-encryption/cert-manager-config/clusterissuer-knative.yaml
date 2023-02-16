@@ -1,0 +1,7 @@
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: knative-cluster-issuer
+spec:
+  ca:
+    secretName: knative-internal-ca
