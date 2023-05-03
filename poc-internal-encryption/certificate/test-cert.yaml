@@ -5,10 +5,12 @@ metadata:
     networking.knative.dev/certificate.class: cert-manager.certificate.networking.knative.dev
   labels:
     networking.knative.dev/visibility: cluster-local
-  name: knative-serving-certs
-  namespace: knative-serving
+  name: my-cert
+  namespace: demo
 spec:
   dnsNames:
-  - knative
-  domain: knative
-  secretName: knative-serving-certs
+  - hello-example.default
+  - hello-example.default.svc
+  - hello-example.default.svc.cluster.local
+  domain: hello-example.default.svc.cluster.local
+  secretName: my-cert
