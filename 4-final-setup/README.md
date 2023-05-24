@@ -244,7 +244,7 @@ server: envoy
 Hello Go Sample v1!
 ```
 
-⛔️ Note: The certificate is not trusted by curl, as a client would need to manually match the SAN (which curl cannot do)!
+⛔️ Note: The certificate is not trusted by curl, as a client would need to manually match the SAN (which curl cannot do)! [More info](https://access.redhat.com/documentation/en-us/red_hat_openshift_serverless/1.28/html/serving/external-and-ingress-routing#serverless-enabling-tls-local-services_cluster-local-availability).
 
 ```bash
 kubectl exec deployment/curl -n default -it -- curl -siv https://helloworld.default.svc.cluster.local --cacert /tmp/kourier-ca.crt
