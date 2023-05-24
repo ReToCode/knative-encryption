@@ -70,8 +70,8 @@ rm ca.crt
 ```
 
 ```text
-☑️ Verifying internal encryption
-☑️ Checking form same namespace
+📝 Verifying internal encryption
+📝 Checking form same namespace
 
 Calling http://helloworld
 Call to http://helloworld succeeded
@@ -103,7 +103,7 @@ Calling https://helloworld.default.svc.cluster.local
 # SSL result is:
 *  subjectAltName: host "helloworld.default.svc.cluster.local" matched cert's "helloworld.default.svc.cluster.local"
 Call to https://helloworld.default.svc.cluster.local succeeded
-☑️ Checking form other namespace
+📝 Checking form other namespace
 
 Calling http://helloworld
 command terminated with exit code 6
