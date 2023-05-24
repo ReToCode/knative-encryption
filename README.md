@@ -8,6 +8,8 @@ This repository contains stuff to hack around Serverless encryption.
 * A `kubernetes` cluster with `kubectl` configured that can provide services with type `LoadBalancer`
 
 ## Contents
-* [initial-research](./initial-research)
-* [poc-internal-encryption](./poc-internal-encryption)
-* [net-istio-implementation](./net-istio-implementation)
+* [helpers](./0-helpers)
+* [initial research](./1-initial-research)
+* [poc istio](./2-poc-net-istio)
+* [poc kourier](./3-poc-kourier)
+* [final setup](./4-final-setup)
