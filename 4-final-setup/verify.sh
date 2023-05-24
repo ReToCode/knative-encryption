@@ -28,9 +28,9 @@ function curl_and_assert() {
   fi
 }
 
-echo "☑️ Verifying internal encryption"
+echo "📝 Verifying internal encryption"
 
-echo "☑️ Checking form same namespace"
+echo "📝 Checking form same namespace"
 curl_and_assert "default" "http://helloworld" "404 Not Found" "false"
 curl_and_assert "default" "http://helloworld.default" "200 OK" "false"
 curl_and_assert "default" "http://helloworld.default.svc" "200 OK" "false"
@@ -41,7 +41,7 @@ curl_and_assert "default" "https://helloworld.default" "HTTP/2 200" "true"
 curl_and_assert "default" "https://helloworld.default.svc" "HTTP/2 200" "true"
 curl_and_assert "default" "https://helloworld.default.svc.cluster.local" "HTTP/2 200" "true"
 
-echo "☑️ Checking form other namespace"
+echo "📝 Checking form other namespace"
 curl_and_assert "second" "http://helloworld" "Could not resolve host" "false"
 curl_and_assert "second" "http://helloworld.default" "200 OK" "false"
 curl_and_assert "second" "http://helloworld.default.svc" "200 OK" "false"
