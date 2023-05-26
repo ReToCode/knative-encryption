@@ -143,7 +143,7 @@ Call to https://helloworld.default.svc.cluster.local succeeded
 ✅  All tests completed successfully
 ```
 
-### Verify with one cert
+### Verify with one cert (deprecated)
 
 Preparation
 
