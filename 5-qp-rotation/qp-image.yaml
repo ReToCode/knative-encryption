@@ -1,0 +1,13 @@
+apiVersion: v1
+data:
+  queue-sidecar-image: quay.io/rlehmann/main.go-60ed5784d23125a1d08e8de7d0458e6c:latest
+kind: ConfigMap
+metadata:
+  annotations:
+    knative.dev/example-checksum: 410041a0
+  labels:
+    app.kubernetes.io/component: controller
+    app.kubernetes.io/name: knative-serving
+    app.kubernetes.io/version: 1.10.2
+  name: config-deployment
+  namespace: knative-serving
