@@ -12,5 +12,5 @@ This repository contains stuff to hack around Serverless encryption.
 * [initial research](./1-initial-research)
 * [poc istio](./2-poc-net-istio)
 * [poc kourier](./3-poc-kourier)
-* [final setup](./4-final-setup)
-* [qp rotation](./5-qp-rotation)
+* [qp rotation](./4-qp-rotation)
+* [vision](./5-final)

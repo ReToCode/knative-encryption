@@ -37,15 +37,35 @@ ko apply -Rf config
 kubectl apply -f ./config-certmanager.yaml
   
 # Enable internal encryption
-kubectl patch cm config-network -n "knative-serving" -p '{"data":{"internal-encryption":"true"}}'
+kubectl patch cm config-network -n "knative-serving" -p '{"data":{"knative-internal-tls":"enabled"}}'
 
 # Restart activator (for now needed)
 kubectl delete pod -n knative-serving -l app=activator
 ```
 
+Optional: enable request logging
+```bash
+# Activator and Q-P
+kubectl patch configmap/config-observability \
+  --namespace knative-serving \
+  --type merge \
+  --patch '{"data":{"logging.enable-request-log":"true"}}'
+  
+# Kourier gateway
+kubectl patch configmap/config-kourier \
+  --namespace knative-serving \
+  --type merge \
+  --patch '{"data":{"logging.enable-request-log":"true"}}'
+```
+
 ## Deploy a Knative Service
 ```bash
 kubectl apply -f ../0-helpers/ksvc.yaml
+# or
+kubectl apply -f ../0-helpers/ksvc-activator.yaml
+# or
+# Note: this needs a change in Serving: kpa.go:131
+kubectl apply -f ../0-helpers/ksvc-no-activator.yaml
 ```
 
 ## Testing
