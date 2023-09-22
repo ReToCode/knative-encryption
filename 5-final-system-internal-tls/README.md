@@ -1,15 +1,8 @@
-# Final Setup: Knative internal encryption
-
-This setup describes testing on the work for https://github.com/knative/serving/issues/13472 using [net-certmanager](https://github.com/knative-sandbox/net-certmanager).
+# Final Setup: system-internal-tls
 
 ## Setup
 
 ```bash
-# Install cert-manager
-kubectl apply -f ./third_party/cert-manager-latest/cert-manager.yaml
-kubectl wait --for=condition=Established --all crd
-kubectl wait --for=condition=Available -n cert-manager --all deployments
-
 # Install serving (in serving directory)
 ko apply --selector knative.dev/crd-install=true -Rf config/core/
 kubectl wait --for=condition=Established --all crd
@@ -30,14 +23,8 @@ kubectl patch configmap/config-domain \
   --type merge \
   --patch '{"data":{"10.89.0.200.sslip.io":""}}'
 
-# Install net-certmanager (in net-certmanager directory)
-ko apply -Rf config
-
-# Apply net-certmanager config
-kubectl apply -f ./config-certmanager.yaml
-  
-# Enable internal encryption
-kubectl patch cm config-network -n "knative-serving" -p '{"data":{"knative-internal-tls":"enabled"}}'
+# Enable system-internal encryption
+kubectl patch cm config-network -n "knative-serving" -p '{"data":{"system-internal-tls":"enabled"}}'
 
 # Restart activator (for now needed)
 kubectl delete pod -n knative-serving -l app=activator
@@ -46,11 +33,8 @@ kubectl delete pod -n knative-serving -l app=activator
 Optional: enable request logging
 ```bash
 # Activator and Q-P
-kubectl patch configmap/config-observability \
-  --namespace knative-serving \
-  --type merge \
-  --patch '{"data":{"logging.enable-request-log":"true"}}'
-  
+kubectl apply -f config-observability.yaml
+
 # Kourier gateway
 kubectl patch configmap/config-kourier \
   --namespace knative-serving \
