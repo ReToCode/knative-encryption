@@ -28,7 +28,7 @@ function curl_and_assert() {
   fi
 }
 
-echo "📝 Verifying internal encryption"
+echo "📝 Verifying cluster-local-domain-tls"
 
 echo "📝 Checking form same namespace"
 curl_and_assert "default" "http://helloworld" "404 Not Found" "false"

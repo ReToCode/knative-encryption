@@ -1,16 +1,16 @@
-# Final Setup: Knative internal encryption
-
-This setup describes testing on the work for https://github.com/knative/serving/issues/13472 using [net-certmanager](https://github.com/knative-sandbox/net-certmanager).
+# Knative cluster-local-domain-tls with Knative Issuer
 
 ## Setup
 
 ```bash
 # Install serving (in serving directory)
+git checkout cluster-local-tls-internal-issuer
 ko apply --selector knative.dev/crd-install=true -Rf config/core/
 kubectl wait --for=condition=Established --all crd
 ko apply -Rf config/core/
 
 # Install kourier (in kourier directory)
+git checkout cluster-local-tls
 ko apply -Rf config
 
 # Enable kourier
@@ -25,19 +25,35 @@ kubectl patch configmap/config-domain \
   --type merge \
   --patch '{"data":{"10.89.0.200.sslip.io":""}}'
   
-# Enable internal encryption
-kubectl patch cm config-network -n "knative-serving" -p '{"data":{"internal-encryption":"true"}}'
-
-# Restart activator (for now needed)
-kubectl delete pod -n knative-serving -l app=activator
+# Enable cluster-local-domain-tls encryption
+kubectl patch cm config-network -n "knative-serving" -p '{"data":{"cluster-local-domain-tls":"enabled"}}'
 
 # Use knative internal issuer
-kubectl patch cm config-network -n "knative-serving" -p '{"data":{"certificate-class":"knative-internal.certificate.networking.knative.dev"}}'
+kubectl patch cm config-network -n "knative-serving" -p '{"data":{"certificate-class":"knative-selfsigned.certificate.networking.knative.dev"}}'
+```
+
+Optional: enable request logging
+```bash
+# Activator and Q-P
+kubectl patch configmap/config-observability \
+  --namespace knative-serving \
+  --type merge \
+  --patch '{"data":{"logging.enable-request-log":"true"}}'
+  
+# Kourier gateway
+kubectl patch configmap/config-kourier \
+  --namespace knative-serving \
+  --type merge \
+  --patch '{"data":{"logging.enable-request-log":"true"}}'
 ```
 
 ## Deploy a Knative Service
 ```bash
+# external service
 kubectl apply -f ../0-helpers/ksvc.yaml
+
+# cluster-local service
+kubectl apply -f ../0-helpers/ksvc-cluster-local.yaml
 ```
 
 ## Testing
@@ -51,7 +67,7 @@ kubectl apply -n second -f ../0-helpers/curl.yaml
 kubectl apply -n default -f ../0-helpers/curl.yaml
 
 # Get CA and copy to curl pod
-kubectl get secrets knative-internal-encryption-ca -n cert-manager -o jsonpath={'.data.ca\.crt'} | base64 -d | openssl x509 -text > ca.crt
+kubectl get secrets serving-certs-cluster-local-domain-ca -n knative-serving -o jsonpath={'.data.tls\.crt'} | base64 -d | openssl x509 -text > ca.crt
 kubectl cp ca.crt "default/$(kubectl get -n default pod -o=name | grep curl | sed 's/^.\{4\}//')":/tmp/
 kubectl cp ca.crt "second/$(kubectl get -n second pod -o=name | grep curl | sed 's/^.\{4\}//')":/tmp/
 rm ca.crt
@@ -60,12 +76,23 @@ rm ca.crt
 
 ### Verify with SNI
 
+Just for manual testing:
+
+```bash
+kubectl exec deployment/curl -n default -it -- curl -si https://helloworld.default --cacert /tmp/ca.crt
+kubectl exec deployment/curl -n default -it -- curl -si https://helloworld.default.svc --cacert /tmp/ca.crt
+kubectl exec deployment/curl -n default -it -- curl -si https://helloworld.default.svc.cluster.local --cacert /tmp/ca.crt
+kubectl run openssl --rm -n default --image=alpine/openssl --restart=Never -it --command -- sh -c "echo | openssl s_client -connect helloworld.default.svc.cluster.local:443 | openssl x509 -text"
+```
+
+Automated testing with multiple cases:
+
 ```bash
 ./verify.sh
 ```
 
 ```text
-📝 Verifying internal encryption
+📝 Verifying cluster-local-domain-tls
 📝 Checking form same namespace
 
 Calling http://helloworld
@@ -135,7 +162,7 @@ Call to https://helloworld.default.svc.cluster.local succeeded
 ✅  All tests completed successfully
 ```
 
-### Verify with one cert (deprecated)
+### Verify with one global cert in kourier
 
 Preparation
 
@@ -175,10 +202,6 @@ rm ca.crt ca.key ca.srl tls.crt tls.csr tls.key
 # Restart net-kourier pod
 kubectl delete pod -n knative-serving -l app=net-kourier-controller
 kubectl delete pod -n kourier-system -l app=3scale-kourier-gateway
-```
-
-```bash
-kubectl exec deployment/curl -n default -it -- curl -sivk https://helloworld.default
 ```
 
 📝 Note: Only one CN without SANs is returned, it is the same, no matter which url you call the Knative Service with!

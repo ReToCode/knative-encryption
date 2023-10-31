@@ -3,11 +3,10 @@ kind: Service
 metadata:
   name: helloworld
   namespace: default
+  labels:
+    networking.knative.dev/visibility: cluster-local
 spec:
   template:
-    metadata:
-      annotations:
-        autoscaling.knative.dev/target-burst-capacity: "-1"
     spec:
       containers:
       - image: ghcr.io/knative/helloworld-go:latest

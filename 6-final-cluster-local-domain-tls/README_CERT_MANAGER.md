@@ -1,4 +1,4 @@
-# Final Setup: cluster-local-domain-tls
+# Knative cluster-local-domain-tls with net-certmanager & certmanager
 
 This setup describes testing on the work for https://github.com/knative/serving/issues/13472 using [net-certmanager](https://github.com/knative-sandbox/net-certmanager).
 
@@ -37,11 +37,7 @@ ko apply -Rf config
 kubectl apply -f ./config-certmanager.yaml
   
 # Enable cluster-local-domain-tls encryption
-# TODO
-# kubectl patch cm config-network -n "knative-serving" -p '{"data":{"knative-internal-tls":"enabled"}}'
-
-# Restart activator (for now needed)
-kubectl delete pod -n knative-serving -l app=activator
+kubectl patch cm config-network -n "knative-serving" -p '{"data":{"cluster-local-domain-tls":"enabled"}}'
 ```
 
 Optional: enable request logging
