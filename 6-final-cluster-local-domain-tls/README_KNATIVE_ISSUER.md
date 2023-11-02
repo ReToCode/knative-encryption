@@ -23,7 +23,7 @@ kubectl patch configmap/config-network \
 kubectl patch configmap/config-domain \
   --namespace knative-serving \
   --type merge \
-  --patch '{"data":{"10.89.0.200.sslip.io":""}}'
+  --patch '{"data":{"192.168.105.100.sslip.io":""}}'
   
 # Enable cluster-local-domain-tls encryption
 kubectl patch cm config-network -n "knative-serving" -p '{"data":{"cluster-local-domain-tls":"enabled"}}'
