@@ -1,0 +1,13 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: routing-serving-certs
+  namespace: knative-serving
+spec:
+  dnsNames:
+    - kn-routing
+  secretName: routing-serving-certs
+  issuerRef:
+    name: selfsigned-cluster-issuer
+    kind: ClusterIssuer
+    group: cert-manager.io
