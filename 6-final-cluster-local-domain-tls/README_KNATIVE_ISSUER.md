@@ -10,7 +10,7 @@ kubectl wait --for=condition=Established --all crd
 ko apply -Rf config/core/
 
 # Install kourier (in kourier directory)
-git checkout cluster-local-tls
+git checkout cluster-local-tls-2
 ko apply -Rf config
 
 # Enable kourier
