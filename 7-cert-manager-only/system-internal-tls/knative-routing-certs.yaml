@@ -6,8 +6,9 @@ metadata:
 spec:
   dnsNames:
     - kn-routing
+    - data-plane.knative.dev # for reverse-compatibility with net-* implementations that do not work with multi-SANs
   secretName: routing-serving-certs
   issuerRef:
-    name: selfsigned-cluster-issuer
+    name: knative-selfsigned-issuer
     kind: ClusterIssuer
     group: cert-manager.io

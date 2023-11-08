@@ -10,6 +10,10 @@ kubectl wait --for=condition=Available -n cert-manager --all deployments
 kubectl create ns knative-serving
 kubectl apply -f system-internal-tls
 
+# install net-certmanager (in net-certmanager directory)
+git checkout upstream/main
+ko apply -f config
+
 # Install serving (in serving directory)
 git checkout encryption-certmanager-only
 ko apply --selector knative.dev/crd-install=true -Rf config/core/
@@ -17,7 +21,7 @@ kubectl wait --for=condition=Established --all crd
 ko apply -Rf config/core/
 
 # Install kourier (in kourier directory)
-git checkout encryption-certmanager-only cluster-local-tls-2
+git checkout encryption-certmanager-only
 ko apply -Rf config
 
 # Enable kourier
@@ -31,12 +35,15 @@ kubectl patch configmap/config-domain \
   --namespace knative-serving \
   --type merge \
   --patch '{"data":{"10.89.0.200.sslip.io":""}}'
-  
-# (Optional): enable system-internal-tls encryption
+    
+# Part 1: enable system-internal-tls encryption
 kubectl patch cm config-network -n "knative-serving" -p '{"data":{"system-internal-tls":"enabled"}}'
   
-# Enable cluster-local-domain-tls encryption
+# Part 2: Enable cluster-local-domain-tls encryption
 kubectl patch cm config-network -n "knative-serving" -p '{"data":{"cluster-local-domain-tls":"enabled"}}'
+
+# Part 3: External domains
+kubectl patch cm config-network -n "knative-serving" -p '{"data":{"external-domain-tls":"enabled"}}'
 ```
 
 (Optional): enable request logging
@@ -74,7 +81,7 @@ kubectl apply -n second -f ../0-helpers/curl.yaml
 kubectl apply -n default -f ../0-helpers/curl.yaml
 
 # Get CA and copy to curl pod
-kubectl get secrets serving-certs-cluster-local-domain-ca -n knative-serving -o jsonpath={'.data.tls\.crt'} | base64 -d | openssl x509 -text > ca.crt
+kubectl get secrets knative-selfsigned-ca -n cert-manager -o jsonpath={'.data.tls\.crt'} | base64 -d | openssl x509 -text > ca.crt
 kubectl cp ca.crt "default/$(kubectl get -n default pod -o=name | grep curl | sed 's/^.\{4\}//')":/tmp/
 kubectl cp ca.crt "second/$(kubectl get -n second pod -o=name | grep curl | sed 's/^.\{4\}//')":/tmp/
 rm ca.crt
@@ -90,6 +97,11 @@ kubectl exec deployment/curl -n default -it -- curl -si https://helloworld.defau
 kubectl exec deployment/curl -n default -it -- curl -si https://helloworld.default.svc --cacert /tmp/ca.crt
 kubectl exec deployment/curl -n default -it -- curl -si https://helloworld.default.svc.cluster.local --cacert /tmp/ca.crt
 kubectl run openssl --rm -n default --image=alpine/openssl --restart=Never -it --command -- sh -c "echo | openssl s_client -connect helloworld.default.svc.cluster.local:443 | openssl x509 -text"
+```
+
+```bash
+# Verify cluster-external-domain
+curl -k https://helloworld.default.10.89.0.200.sslip.io
 ```
 
 Automated testing with multiple cases:
