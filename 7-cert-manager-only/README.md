@@ -11,7 +11,7 @@ kubectl create ns knative-serving
 kubectl apply -f system-internal-tls
 
 # install net-certmanager (in net-certmanager directory)
-git checkout upstream/main
+git checkout encryption-certmanager-only
 ko apply -f config
 
 # Install serving (in serving directory)
@@ -34,31 +34,17 @@ kubectl patch configmap/config-network \
 kubectl patch configmap/config-domain \
   --namespace knative-serving \
   --type merge \
-  --patch '{"data":{"10.89.0.200.sslip.io":""}}'
+  --patch '{"data":{"192.168.105.100.sslip.io":""}}'
     
 # Part 1: enable system-internal-tls encryption
 kubectl patch cm config-network -n "knative-serving" -p '{"data":{"system-internal-tls":"enabled"}}'
+kubectl delete pod -n knative-serving -l app=activator --grace-period=0 --force
   
 # Part 2: Enable cluster-local-domain-tls encryption
 kubectl patch cm config-network -n "knative-serving" -p '{"data":{"cluster-local-domain-tls":"enabled"}}'
 
 # Part 3: External domains
 kubectl patch cm config-network -n "knative-serving" -p '{"data":{"external-domain-tls":"enabled"}}'
-```
-
-(Optional): enable request logging
-```bash
-# Activator and Q-P
-kubectl patch configmap/config-observability \
-  --namespace knative-serving \
-  --type merge \
-  --patch '{"data":{"logging.enable-request-log":"true"}}'
-  
-# Kourier gateway
-kubectl patch configmap/config-kourier \
-  --namespace knative-serving \
-  --type merge \
-  --patch '{"data":{"logging.enable-request-log":"true"}}'
 ```
 
 ## Deploy a Knative Service
@@ -101,7 +87,7 @@ kubectl run openssl --rm -n default --image=alpine/openssl --restart=Never -it -
 
 ```bash
 # Verify cluster-external-domain
-curl -k https://helloworld.default.10.89.0.200.sslip.io
+curl -k https://helloworld.default.192.168.105.100.sslip.io
 ```
 
 Automated testing with multiple cases:
@@ -295,3 +281,18 @@ kubectl exec deployment/curl -n default -it -- curl -siv https://helloworld.defa
 * SSL: no alternative certificate subject name matches target host name 'helloworld.default.svc.cluster.local'
 ```
 
+
+(Optional): enable request logging
+```bash
+# Activator and Q-P
+kubectl patch configmap/config-observability \
+  --namespace knative-serving \
+  --type merge \
+  --patch '{"data":{"logging.enable-request-log":"true"}}'
+  
+# Kourier gateway
+kubectl patch configmap/config-kourier \
+  --namespace knative-serving \
+  --type merge \
+  --patch '{"data":{"logging.enable-request-log":"true"}}'
+```
