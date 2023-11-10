@@ -90,6 +90,16 @@ kubectl run openssl --rm -n default --image=alpine/openssl --restart=Never -it -
 curl -k https://helloworld.default.192.168.105.100.sslip.io
 ```
 
+### Verify with traffic tags
+
+```bash
+kubectl apply -f ../0-helpers/ksvc-traffic-tags.yaml
+kubectl exec deployment/curl -n default -it -- curl -si https://latest-helloworld.default --cacert /tmp/ca.crt
+curl -k https://latest-helloworld.default.192.168.105.100.sslip.io
+```
+
+### Verify with 
+
 Automated testing with multiple cases:
 
 ```bash
