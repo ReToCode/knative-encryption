@@ -13,4 +13,6 @@ This repository contains stuff to hack around Serverless encryption.
 * [poc istio](./2-poc-net-istio)
 * [poc kourier](./3-poc-kourier)
 * [qp rotation](./4-qp-rotation)
-* [vision](./5-final)
+* [system-internal-tls](./5-final-system-internal-tls)
+* [cluster-local-domain-tls](./6-final-cluster-local-domain-tls)
+* [full setup with cert-manager](./7-cert-manager-only)

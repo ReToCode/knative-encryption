@@ -46,9 +46,6 @@ kubectl patch cm config-network -n "knative-serving" -p '{"data":{"external-doma
 # Part 4: wildcard certs (unrelated to encryption)
 kubectl patch cm config-network -n "knative-serving" -p '{"data":{"external-domain-tls":"enabled"}}'
 kubectl patch --namespace knative-serving configmap config-network -p '{"data": {"namespace-wildcard-cert-selector": "{\"matchExpressions\": [{\"key\":\"networking.knative.dev/disableWildcardCert\", \"operator\": \"NotIn\", \"values\":[\"true\"]}]}"}}'
-
-# Part 5: domain mappings with TLS
-
 ```
 
 ## Deploy a Knative Service
@@ -91,7 +88,7 @@ kubectl run openssl --rm -n default --image=alpine/openssl --restart=Never -it -
 
 ```bash
 # Verify cluster-external-domain
-curl -k https://helloworld.default.192.168.105.100.sslip.io
+curl -k https://helloworld.default.172.17.0.100.sslip.io
 ```
 
 ### Verify with traffic tags
@@ -99,10 +96,18 @@ curl -k https://helloworld.default.192.168.105.100.sslip.io
 ```bash
 kubectl apply -f ../0-helpers/ksvc-traffic-tags.yaml
 kubectl exec deployment/curl -n default -it -- curl -si https://latest-helloworld.default --cacert /tmp/ca.crt
-curl -k https://latest-helloworld.default.192.168.105.100.sslip.io
+curl -k https://latest-helloworld.default.172.17.0.100.sslip.io
 ```
 
-### Verify with 
+### Verify with domain-mapping and TLS
+
+```bash
+kubectl apply -f ../0-helpers/ksvc-domainmapping-tls.yaml
+curl -ivk https://helloworld.default.172.17.0.100.sslip.io
+curl -ivk https://helloworld-dm.default.172.17.0.100.sslip.io
+```
+
+### Verify with script 
 
 Automated testing with multiple cases:
 
