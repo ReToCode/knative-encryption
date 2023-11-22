@@ -1,0 +1,31 @@
+apiVersion: networking.internal.knative.dev/v1alpha1
+kind: Certificate
+metadata:
+  annotations:
+    networking.knative.dev/certificate.class: cert-manager.certificate.networking.knative.dev
+  creationTimestamp: "2023-11-22T12:21:21Z"
+  generation: 1
+  labels:
+    networking.knative.dev/wildcardDomain: 172.17.0.100.sslip.io
+  name: default.172.17.0.100.sslip.io
+  namespace: default
+  ownerReferences:
+    - apiVersion: v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Namespace
+      name: default
+      uid: 816ab6be-03bf-47f8-9643-7e8c0ff803c4
+  resourceVersion: "35133"
+  uid: 4e275312-d8aa-43c9-9e55-47e26ec807f5
+spec:
+  dnsNames:
+    - '*.default.172.17.0.100.sslip.io'
+  secretName: default.172.17.0.100.sslip.io
+status:
+  conditions:
+    - lastTransitionTime: "2023-11-22T12:21:26Z"
+      status: "True"
+      type: Ready
+  notAfter: "2024-02-20T12:21:24Z"
+  observedGeneration: 1

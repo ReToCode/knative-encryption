@@ -1,0 +1,87 @@
+apiVersion: networking.internal.knative.dev/v1alpha1
+kind: Ingress
+metadata:
+  annotations:
+    networking.internal.knative.dev/rollout: '{"configurations":[{"configurationName":"helloworld","percent":100,"revisions":[{"revisionName":"helloworld-00001","percent":100}],"stepParams":{}}]}'
+    networking.knative.dev/ingress.class: kourier.ingress.networking.knative.dev
+    serving.knative.dev/creator: minikube-user
+    serving.knative.dev/lastModifier: minikube-user
+  creationTimestamp: "2023-11-22T09:01:57Z"
+  finalizers:
+    - ingresses.networking.internal.knative.dev
+  generation: 3
+  labels:
+    serving.knative.dev/route: helloworld
+    serving.knative.dev/routeNamespace: default
+    serving.knative.dev/service: helloworld
+  name: helloworld
+  namespace: default
+  ownerReferences:
+    - apiVersion: serving.knative.dev/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Route
+      name: helloworld
+      uid: 18b09de1-0fc8-446d-bafd-154c0a4379a7
+  resourceVersion: "2032"
+  uid: 19244721-6518-4aa8-92c7-f0cbe0aee5bb
+spec:
+  httpOption: Enabled
+  rules:
+    - hosts:
+        - helloworld.default
+        - helloworld.default.svc
+        - helloworld.default.svc.cluster.local
+      http:
+        paths:
+          - splits:
+              - appendHeaders:
+                  Knative-Serving-Namespace: default
+                  Knative-Serving-Revision: helloworld-00001
+                percent: 100
+                serviceName: helloworld-00001
+                serviceNamespace: default
+                servicePort: 443
+      visibility: ClusterLocal
+    - hosts:
+        - helloworld.default.172.17.0.100.sslip.io
+      http:
+        paths:
+          - splits:
+              - appendHeaders:
+                  Knative-Serving-Namespace: default
+                  Knative-Serving-Revision: helloworld-00001
+                percent: 100
+                serviceName: helloworld-00001
+                serviceNamespace: default
+                servicePort: 443
+      visibility: ExternalIP
+  tls:
+    - hosts:
+        - helloworld.default.172.17.0.100.sslip.io
+      secretName: route-18b09de1-0fc8-446d-bafd-154c0a4379a7
+      secretNamespace: default
+    - hosts:
+        - helloworld.default
+        - helloworld.default.svc
+        - helloworld.default.svc.cluster.local
+      secretName: route-18b09de1-0fc8-446d-bafd-154c0a4379a7-local
+      secretNamespace: default
+status:
+  conditions:
+    - lastTransitionTime: "2023-11-22T09:01:58Z"
+      status: "True"
+      type: LoadBalancerReady
+    - lastTransitionTime: "2023-11-22T09:01:57Z"
+      status: "True"
+      type: NetworkConfigured
+    - lastTransitionTime: "2023-11-22T09:01:58Z"
+      status: "True"
+      type: Ready
+  observedGeneration: 3
+  privateLoadBalancer:
+    ingress:
+      - domainInternal: kourier-internal.kourier-system.svc.cluster.local
+  publicLoadBalancer:
+    ingress:
+      - domainInternal: kourier.kourier-system.svc.cluster.local

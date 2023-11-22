@@ -6,11 +6,8 @@ kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/
 kubectl wait --for=condition=Established --all crd
 kubectl wait --for=condition=Available -n cert-manager --all deployments
 
-# create issuer + certificates
-kubectl create ns knative-serving
-kubectl apply -f system-internal-tls
-
 # install net-certmanager (in net-certmanager directory)
+kubectl create ns knative-serving
 git checkout encryption-certmanager-only
 ko apply -f config
 
@@ -34,7 +31,7 @@ kubectl patch configmap/config-network \
 kubectl patch configmap/config-domain \
   --namespace knative-serving \
   --type merge \
-  --patch '{"data":{"192.168.105.100.sslip.io":""}}'
+  --patch '{"data":{"172.17.0.100.sslip.io":""}}'
     
 # Part 1: enable system-internal-tls encryption
 kubectl patch cm config-network -n "knative-serving" -p '{"data":{"system-internal-tls":"enabled"}}'
@@ -45,6 +42,13 @@ kubectl patch cm config-network -n "knative-serving" -p '{"data":{"cluster-local
 
 # Part 3: External domains
 kubectl patch cm config-network -n "knative-serving" -p '{"data":{"external-domain-tls":"enabled"}}'
+
+# Part 4: wildcard certs (unrelated to encryption)
+kubectl patch cm config-network -n "knative-serving" -p '{"data":{"external-domain-tls":"enabled"}}'
+kubectl patch --namespace knative-serving configmap config-network -p '{"data": {"namespace-wildcard-cert-selector": "{\"matchExpressions\": [{\"key\":\"networking.knative.dev/disableWildcardCert\", \"operator\": \"NotIn\", \"values\":[\"true\"]}]}"}}'
+
+# Part 5: domain mappings with TLS
+
 ```
 
 ## Deploy a Knative Service

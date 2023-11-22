@@ -1,0 +1,107 @@
+apiVersion: networking.internal.knative.dev/v1alpha1
+kind: Certificate
+metadata:
+  annotations:
+    networking.knative.dev/certificate.class: cert-manager.certificate.networking.knative.dev
+    serving.knative.dev/creator: minikube-user
+    serving.knative.dev/lastModifier: minikube-user
+  creationTimestamp: "2023-11-22T09:01:57Z"
+  generation: 1
+  labels:
+    networking.knative.dev/certificate-type: external-domain
+    serving.knative.dev/route: helloworld
+  name: route-18b09de1-0fc8-446d-bafd-154c0a4379a7
+  namespace: default
+  ownerReferences:
+    - apiVersion: serving.knative.dev/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Route
+      name: helloworld
+      uid: 18b09de1-0fc8-446d-bafd-154c0a4379a7
+  resourceVersion: "2015"
+  uid: e2d80e21-11a0-461c-9a18-0139dd6533a8
+spec:
+  dnsNames:
+    - helloworld.default.172.17.0.100.sslip.io
+  domain: 172.17.0.100.sslip.io
+  secretName: route-18b09de1-0fc8-446d-bafd-154c0a4379a7
+status:
+  conditions:
+    - lastTransitionTime: "2023-11-22T09:01:57Z"
+      status: "True"
+      type: Ready
+  notAfter: "2024-02-20T09:01:57Z"
+  observedGeneration: 1
+---
+apiVersion: networking.internal.knative.dev/v1alpha1
+kind: Certificate
+metadata:
+  annotations:
+    networking.knative.dev/certificate.class: cert-manager.certificate.networking.knative.dev
+    serving.knative.dev/creator: minikube-user
+    serving.knative.dev/lastModifier: minikube-user
+  creationTimestamp: "2023-11-22T09:01:57Z"
+  generation: 1
+  labels:
+    networking.knative.dev/certificate-type: cluster-local-domain
+    serving.knative.dev/route: helloworld
+  name: route-18b09de1-0fc8-446d-bafd-154c0a4379a7-local
+  namespace: default
+  ownerReferences:
+    - apiVersion: serving.knative.dev/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Route
+      name: helloworld
+      uid: 18b09de1-0fc8-446d-bafd-154c0a4379a7
+  resourceVersion: "2023"
+  uid: 189de496-5f75-48b1-81b8-05506bad8ffd
+spec:
+  dnsNames:
+    - helloworld.default
+    - helloworld.default.svc
+    - helloworld.default.svc.cluster.local
+  domain: svc.cluster.local
+  secretName: route-18b09de1-0fc8-446d-bafd-154c0a4379a7-local
+status:
+  conditions:
+    - lastTransitionTime: "2023-11-22T09:01:57Z"
+      status: "True"
+      type: Ready
+  notAfter: "2024-02-20T09:01:57Z"
+  observedGeneration: 1
+---
+apiVersion: networking.internal.knative.dev/v1alpha1
+kind: Certificate
+metadata:
+  annotations:
+    networking.knative.dev/certificate.class: cert-manager.certificate.networking.knative.dev
+  creationTimestamp: "2023-11-22T09:01:47Z"
+  generation: 1
+  labels:
+    networking.knative.dev/certificate-type: system-internal
+  name: serving-certs
+  namespace: default
+  ownerReferences:
+    - apiVersion: serving.knative.dev/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Revision
+      name: helloworld-00001
+      uid: 47328753-24c6-4668-9d5c-674520616377
+  resourceVersion: "1843"
+  uid: 3e59fe46-7eb3-46b6-bab6-455f9ce5ab5e
+spec:
+  dnsNames:
+    - kn-user-default
+    - data-plane.knative.dev
+  secretName: serving-certs
+status:
+  conditions:
+    - lastTransitionTime: "2023-11-22T09:01:47Z"
+      status: "True"
+      type: Ready
+  notAfter: "2024-02-20T09:01:47Z"
+  observedGeneration: 1
+
