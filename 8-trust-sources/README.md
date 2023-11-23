@@ -6,7 +6,26 @@
 - [OpenShift custom PKI](https://docs.openshift.com/container-platform/4.14/networking/configuring-a-custom-pki.html)
 - [OpenShift Service Signer](https://docs.openshift.com/container-platform/4.14/security/certificates/service-serving-certificate.html)
 
-## How workload trust is achieved
+
+## How workload trust is managed
+
+There are different options, depending on the level, language/framework and requirements for reloading. In general, we have:
+
+* Mounting the bundle to the filesystem
+* Reading it from environment variable
+* Accessing it from a secret/configmap via K8s api
+
+Important is to decide if a reload without downtime is necessary, if so the workload must either watch changes on the K8s resource or watch the filesystem.
+For the latter it is important, that `ionotify` on changing Secrets/ConfigMaps does not work super reliable on K8s. Tests showed that it is more reliable to regularly poll and check the certificate on the filesystem for changes.
+
+Here are a few examples for golang:
+
+* Saving the bundle as a file to a defined path: https://go.dev/src/crypto/x509/root_linux.go (note does not reload without restart)
+* Reloading dynamically via K8s API: https://github.com/knative/serving/blob/main/pkg/activator/certificate/cache.go#L95
+* Reloading from filesystem with a watcher process: https://github.com/knative/serving/blob/main/pkg/queue/certificate/watcher.go#L32
+
+
+## Possible origins of CA bundles
 
 ### trust-manager
 
@@ -61,5 +80,15 @@ metadata:
     kind: Bundle
     name: knative-bundle
     uid: fc27ebe2-be78-49ed-b522-bd358c198fbc
-
 ```
+
+### k8s cluster-trust-bundles
+
+This is only alpha in K8s 1.27, so not an option for us for now.
+
+
+### OpenShift custom PKI
+
+
+### OpenShift Service Signer
+
