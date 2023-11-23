@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  annotations:
+    knative-bundle: "true"
+  labels:
+    knative-bundle: "true"
+  name: knative-bundle
+  namespace: demo

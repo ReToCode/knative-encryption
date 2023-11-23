@@ -36,11 +36,12 @@ helm upgrade -i -n cert-manager cert-manager jetstack/cert-manager --set install
 helm upgrade -i -n cert-manager trust-manager jetstack/trust-manager --wait
 
 kubectl create ns demo
+kubectl create -f yaml/trust-manager-labeled-cm.yaml
 kubectl apply -f yaml/trust-manager-bundle.yaml
 kubectl label ns demo knative-bundle=enabled
 ```
 
-This creates a new config-map in `demo`:
+This updates the existing configmap in `demo`:
 
 ```yaml
 apiVersion: v1
@@ -68,18 +69,20 @@ data:
 kind: ConfigMap
 metadata:
   annotations:
+    knative-bundle: "true"
     trust.cert-manager.io/hash: ff5a4e77438c9cb389024a134169083f24468899229173f3fa1a3403f1c15acb
   labels:
+    knative-bundle: "true"
     trust.cert-manager.io/bundle: knative-bundle
   name: knative-bundle
   namespace: demo
   ownerReferences:
-  - apiVersion: trust.cert-manager.io/v1alpha1
-    blockOwnerDeletion: true
-    controller: true
-    kind: Bundle
-    name: knative-bundle
-    uid: fc27ebe2-be78-49ed-b522-bd358c198fbc
+    - apiVersion: trust.cert-manager.io/v1alpha1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Bundle
+      name: knative-bundle
+      uid: 82562ddb-fd38-486a-9003-4833141a836c
 ```
 
 ### k8s cluster-trust-bundles
