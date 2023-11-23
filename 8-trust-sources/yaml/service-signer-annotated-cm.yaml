@@ -1,0 +1,11 @@
+apiVersion: v1
+data: {}
+kind: ConfigMap
+metadata:
+  labels:
+    knative-bundle: "true"
+  annotations:
+    service.beta.openshift.io/inject-cabundle: "true"
+    knative-bundle: "true"
+  name: service-signer-ca
+  namespace: demo

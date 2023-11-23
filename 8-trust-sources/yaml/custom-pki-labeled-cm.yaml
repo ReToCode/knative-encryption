@@ -1,0 +1,11 @@
+apiVersion: v1
+data: {}
+kind: ConfigMap
+metadata:
+  labels:
+    config.openshift.io/inject-trusted-cabundle: "true"
+    knative-bundle: "true"
+  annotations:
+    knative-bundle: "true"
+  name: custom-pki-cm
+  namespace: demo

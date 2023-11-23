@@ -92,6 +92,71 @@ This is only alpha in K8s 1.27, so not an option for us for now.
 
 ### OpenShift custom PKI
 
+```bash
+kubectl apply -f yaml/custom-pki-labeled-cm.yaml
+```
+
+This results in (shortened - as it's quite long):
+
+```yaml
+apiVersion: v1
+data:
+  ca-bundle.crt: |
+    # List of CA in form:
+    -----BEGIN CERTIFICATE-----
+    
+    -----END CERTIFICATE-----
+kind: ConfigMap
+metadata:
+  annotations:
+    knative-bundle: "true"
+  labels:
+    config.openshift.io/inject-trusted-cabundle: "true"
+    knative-bundle: "true"
+  name: custom-pki-cm
+  namespace: demo
+```
 
 ### OpenShift Service Signer
+
+```bash
+kubectl apply -f yaml/service-signer-annotated-cm.yaml
+```
+
+Results in:
+
+```yaml
+apiVersion: v1
+data:
+  service-ca.crt: |
+    -----BEGIN CERTIFICATE-----
+    MIIDUTCCAjmgAwIBAgIIRiy/M3fY128wDQYJKoZIhvcNAQELBQAwNjE0MDIGA1UE
+    Awwrb3BlbnNoaWZ0LXNlcnZpY2Utc2VydmluZy1zaWduZXJAMTcwMDc0MjQ0MjAe
+    Fw0yMzExMjMxMjI3MjFaFw0yNjAxMjExMjI3MjJaMDYxNDAyBgNVBAMMK29wZW5z
+    aGlmdC1zZXJ2aWNlLXNlcnZpbmctc2lnbmVyQDE3MDA3NDI0NDIwggEiMA0GCSqG
+    SIb3DQEBAQUAA4IBDwAwggEKAoIBAQDTG/HUArck12V5y9aEZVsYlufhOBGkL7Cp
+    hajUP3ZtZgjY3DHxymJTIUnmuC72PJt+h0eENWQTHz9WKX8hLmGVv9Loue0FYNKq
+    ITKsST/XbEHJ/OGO6ob3XknmvToF9fZSQLSXGTUYaWqCkUVLogvJAAEUzyrHrhso
+    wUrdKDjPzKYltiIF/4GBnq044OL/qJhpfZ4+rjFiNtnRt9GTukKMmH1Q1ysFLLAY
+    CCglc9dytoZ//67acYO4sW7iGaI69+NymptBuozp8nEJxBhyXTwwXSs9ytJkGamQ
+    NdDDcL2LGFTBk7a3RsZwcrxwolJMz5dwh5Teb68a0TMvOPvXAHmbAgMBAAGjYzBh
+    MA4GA1UdDwEB/wQEAwICpDAPBgNVHRMBAf8EBTADAQH/MB0GA1UdDgQWBBTbfpU/
+    8xr5PIUOnTl/LWt0RMrscjAfBgNVHSMEGDAWgBTbfpU/8xr5PIUOnTl/LWt0RMrs
+    cjANBgkqhkiG9w0BAQsFAAOCAQEAMpBVdhcu4G/aQUozdNrNwGmsoJcfz8//hY/7
+    fSlg+HV1HFDmc6jEGtSUivfCTj3stSxTdh66ini2xz5DZoaL6vfMcgMaxA7zkMZP
+    DUmyGXDyEoYVfpHHkgg5xaK5wo5QOE0RB/cbmzgGpIfTnN0hwRil6PCi+RwXR/T6
+    Aw2fgPu0UZ6vsD3Lb8Hb7XdRqL9ouJmSJAiiBeFn0Ne23xm78AiFq/SsnX6Q0A3S
+    6cOX7nSBzl+Ezq/KK2GlKaO/DZ+MEDZ2gNHI3tb6b68zQzOKunUJBKUKfiMb0Bsf
+    P5ttpB0slWu9OAXoT3UHitoWGNqih46tqVkYWddacsyoJ8rrHw==
+    -----END CERTIFICATE-----
+kind: ConfigMap
+metadata:
+  annotations:
+    knative-bundle: "true"
+    service.beta.openshift.io/inject-cabundle: "true"
+  labels:
+    knative-bundle: "true"
+  name: service-signer-ca
+  namespace: demo
+```
 
