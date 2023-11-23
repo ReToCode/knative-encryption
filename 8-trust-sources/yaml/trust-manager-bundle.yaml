@@ -1,0 +1,16 @@
+apiVersion: trust.cert-manager.io/v1alpha1
+kind: Bundle
+metadata:
+  name: knative-bundle
+  namespace: cert-manager # put this where your CA secret is (or use inLine config)
+spec:
+  sources:
+    - secret:
+        name: knative-selfsigned-ca
+        key: ca.crt
+  target:
+    configMap:
+      key: "cacerts.pem"
+    namespaceSelector:
+      matchLabels:
+        knative-bundle: "enabled"
