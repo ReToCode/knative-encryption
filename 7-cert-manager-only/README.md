@@ -31,7 +31,7 @@ kubectl patch configmap/config-network \
 kubectl patch configmap/config-domain \
   --namespace knative-serving \
   --type merge \
-  --patch '{"data":{"172.17.0.100.sslip.io":""}}'
+  --patch "{\"data\":{\"$BASE_URL\":\"\"}}"
     
 # Part 1: enable system-internal-tls encryption
 kubectl patch cm config-network -n "knative-serving" -p '{"data":{"system-internal-tls":"enabled"}}'
@@ -88,7 +88,7 @@ kubectl run openssl --rm -n default --image=alpine/openssl --restart=Never -it -
 
 ```bash
 # Verify cluster-external-domain
-curl -k https://helloworld.default.172.17.0.100.sslip.io
+curl -k https://helloworld.default.$BASE_URL
 ```
 
 ### Verify with traffic tags
