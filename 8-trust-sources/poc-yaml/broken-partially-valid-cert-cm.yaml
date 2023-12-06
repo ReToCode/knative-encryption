@@ -1,0 +1,51 @@
+apiVersion: v1
+data:
+  service-ca.crt: |
+    -----BEGIN CERTIFICATE-----
+    MIIDDTCCAfWgAwIBAgIQMQuip05h7NLQq2TB+j9ZmTANBgkqhkiG9w0BAQsFADAW
+    MRQwEgYDVQQDEwtrbmF0aXZlLmRldjAeFw0yMzExMjIwOTAwNDhaFw0yNDAyMjAw
+    OTAwNDhaMBYxFDASBgNVBAMTC2tuYXRpdmUuZGV2MIIBIjANBgkqhkiG9w0BAQEF
+    AAOCAQ8AMIIBCgKCAQEA3clC3CV7sy0TpUKNuTku6QmP9z8JUCbLCPCLACCUc1zG
+    FEokqOva6TakgvAntXLkB3TEsbdCJlNm6qFbbko6DBfX6rEggqZs40x3/T+KH66u
+    4PvMT3fzEtaMJDK/KQOBIvVHrKmPkvccUYK/qWY7rgBjVjjLVSJrCn4dKaEZ2JNr
+    Fd0KNnaaW/dP9/FvviLqVJvHnTMHH5qyRRr1kUGTrc8njRKwpHcnUdauiDoWRKxo
+    Zlyy+MhQfdbbyapX984WsDjCvrDXzkdGgbRNAf+erl6yUm6pHpQhyFFo/zndx6Uq
+    QXA7jYvM2M3qCnXmaFowidoLDsDyhwoxD7WT8zur/QIDAQABo1cwVTAOBgNVHQ8B
+    Af8EBAMCAgQwEwYDVR0lBAwwCgYIKwYBBQUHAwEwDwYDVR0TAQH/BAUwAwEB/zAd
+    BgNVHQ4EFgQU7p4VuECNOcnrP9ulOjc4J37Q2VUwDQYJKoZIhvcNAQELBQADggEB
+    AAv26Vnk+ptQrppouF7yHV8fZbfnehpm07HIZkmnXO2vAP+MZJDNrHjy8JAVzXjt
+    +OlzqAL0cRQLsUptB0btoJuw23eq8RXgJo05OLOPQ2iGNbAATQh2kLwBWd/CMg+V
+    KJ4EIEpF4dmwOohsNR6xa/JoArIYH0D7gh2CwjrdGZr/tq1eMSL+uZcuX5OiE44A
+    2oXF9/jsqerOcH7QUMejSnB8N7X0LmUvH4jAesQgr7jo1JTOBs7GF6wb+U76NzFa
+    8ms2iAWhoplQ+EHR52wffWb0k6trXspq4O6v/J+nq9Ky3vC36so+G1ZFkMhCdTVJ
+    ZmrBsSMWeT2l07qeei2UFRU=
+    -----END CERTIFICATE-----
+    
+    
+    
+    -----BEGIN CERTIFICATE-----
+    MIIDUTCCAjmgAwIBAgIIRiy/M3fY128wDQYJKoZIhvcNAQELBQAwNjE0MDIGA1UE
+    Awwrb3BlbnNoaWZ0LXNlcnZpY2Utc2VydmluZy1zaWduZXJAMTcwMDc0MjQ0MjAe
+    Fw0yMzExMjMxMjI3MjFaFw0yNjAxMjExMjI3MjJaMDYxNDAyBgNVBAMMK29wZW5z
+    aGlmdC1zZXJ2aWNlLXNlcnZpbmctc2lnbmVyQDE3MDA3NDI0NDIwggEiMA0GCSqG
+    SIb3DQEBAQUAA4IBDwAwggEKAoIBAQDTG/HUArck12V5y9aEZVsYlufhOBGkL7Cp
+    hajUP3ZtZgjY3DHxymJTIUnmuC72PJt+h0eENWQTHz9WKX8hLmGVv9Loue0FYNKq
+    ITKsST/XbEHJ/OGO6ob3XknmvToF9fZSQLSXGTUYaWqCkUVLogvJAAEUzyrHrhso
+    wUrdKDjPzKYltiIF/4GBnq044OL/qJhpfZ4+rjFiNtnRt9GTukKMmH1Q1ysFLLAY
+    CCglc9dytoZ//67acYO4sW7iGaI69+NymptBuozp8nEJxBhyXTwwXSs9ytJkGamQ
+    NdDDcL2LGFTBkxxxxxxxxxxxxx7a3RsZwcrxwolJMz5dwh5Teb68a0TM
+    MA4GA1UdDwEB/wQEAwICpDAPBgNVHRMBAf8EBTADAQH/MB0GA1UdDgQWBTbfpU/
+    8xr5PIUOnTl/LWt0RMrscjAfBgNVHSMEGDAWgBTbfpU/8xr5PIUOnTl/LWt0RMrs
+    cjANBgkqhkiG9w0BAQsFAAOCAQEAMpBVdhcu4G/aQUozdNrNwGmsoJcfz8//hY/7
+    fSlg+HV1HFDmc6jEGtSUivfCTj3stSxTdh66ini2xz5DZoaL6vfMcgMaxA7zkMZP
+    DUmyGXDyEoYVfpHHkgg5xaK5wo5QOE0RB/cbmzgGpIfTnN0hwRil6PCi+RwXR/T6
+    Aw2fgPu0UZ6vsD3Lb8Hb7XdRqL9ouJmSJAiiBeFn0Ne23xm78AiFq/SsnX6Q0A3S
+    6cOX7nSBzl+Ezq/KK2GlKaO/DZ+MEDZ2gNHI3tb6b68zQzOKunUJBKUKfiMb0Bsf
+    P5ttpB0slWu9OAXoT3UHitoWGNqih46tqVkYWddacsyoJ8rrHw==
+    -----END CERTIFICATE-----
+kind: ConfigMap
+metadata:
+  labels:
+    knative-ca-trust-bundle: "true"
+  name: invalid-cert
+  namespace: knative-serving

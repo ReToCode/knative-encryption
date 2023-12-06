@@ -31,7 +31,7 @@ kubectl patch configmap/config-network \
 kubectl patch configmap/config-domain \
   --namespace knative-serving \
   --type merge \
-  --patch "{\"data\":{\"$BASE_URL\":\"\"}}"
+  --patch "{\"data\":{\"172.17.0.100.sslip.io\":\"\"}}"
     
 # Part 1: enable system-internal-tls encryption
 kubectl patch cm config-network -n "knative-serving" -p '{"data":{"system-internal-tls":"enabled"}}'
