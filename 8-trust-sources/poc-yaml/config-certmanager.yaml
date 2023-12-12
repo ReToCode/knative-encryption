@@ -1,0 +1,9 @@
+apiVersion: v1
+data:
+  systemInternalIssuerRef: |
+    kind: ClusterIssuer
+    name: test-ca-issuer
+kind: ConfigMap
+metadata:
+  name: config-certmanager
+  namespace: knative-serving
