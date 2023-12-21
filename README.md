@@ -16,3 +16,6 @@ This repository contains stuff to hack around Serverless encryption.
 * [system-internal-tls](./5-final-system-internal-tls)
 * [cluster-local-domain-tls](./6-final-cluster-local-domain-tls)
 * [full setup with cert-manager](./7-cert-manager-only)
+* [trust sources](./8-trust-sources)
+* [envoy trust](./9-envoy)
+* [DEMO](./10-demo)
