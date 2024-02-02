@@ -60,7 +60,7 @@ kubectl apply -n second -f ../0-helpers/curl.yaml
 kubectl apply -n default -f ../0-helpers/curl.yaml
 
 # Get CA and copy to curl pod
-kubectl get secrets knative-selfsigned-ca -n cert-manager -o jsonpath={'.data.tls\.crt'} | base64 -d | openssl x509 -text > ca.crt
+kubectl get secrets knative-selfsigned-ca -n cert-manager -o jsonpath={'.data.tls\.crt'} | base64 -d | openssl x509 -text > /tmp/ca.crt
 kubectl cp /tmp/ca.crt "default/$(kubectl get -n default pod -o=name | grep curl | sed 's/^.\{4\}//')":/tmp/
 kubectl cp /tmp/ca.crt "second/$(kubectl get -n second pod -o=name | grep curl | sed 's/^.\{4\}//')":/tmp/
 ```
