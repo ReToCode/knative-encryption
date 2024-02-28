@@ -1,0 +1,10 @@
+apiVersion: certificates.k8s.io/v1alpha1
+kind: ClusterTrustBundle
+metadata:
+  name: knative.dev:cluster-trust-bundle:signer
+  labels:
+    networking.knative.dev/trust-bundle: "true"
+spec:
+  signerName: knative.dev/cluster-trust-bundle
+  trustBundle: |
+REPLACEME

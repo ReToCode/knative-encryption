@@ -1,0 +1,19 @@
+---
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: app
+  namespace: test
+spec:
+  template:
+    metadata:
+      annotations:
+        autoscaling.knative.dev/min-scale: "1"
+        autoscaling.knative.dev/target-burst-capacity: "-1" # activator always in path
+    spec:
+      containers:
+      - image: ghcr.io/knative/helloworld-go:latest
+        env:
+          - name: TARGET
+            value: "from test"
+---
